@@ -1,0 +1,12 @@
+from django.urls import path
+from . import views
+app_name = 'admission'
+urlpatterns = [
+    path('register/',views.registration,name = 'registration'),
+    path('',views.LoginView,name = 'login'),
+    path('index',views.index,name='index'),
+    path('logout/',views.LogoutView,name='logout'),
+    path('viewStudents',views.veiewStudents,name = 'viewstudents'),
+    path('deletestudent/<int:pk>',views.deletestudent,name = 'deletestudent'),
+    path('updatedetails/<int:pk>',views.updatedetails,name = 'updatedetails')
+]

@@ -1,0 +1,44 @@
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'admission:index' %}">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto"> <!-- Aligns nav items to the right -->
+                
+                {% if request.user.is_superuser %}
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'admission:viewstudents'%}">View Students</a> <!-- Placeholder -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'hostel:index'%}">Room Management</a> <!-- Placeholder -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Library</a> <!-- Placeholder -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Reports</a> <!-- Placeholder -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Timetable</a> <!-- Placeholder -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admission:registration' %}">
+                        <button class="btn btn-outline-primary">New Admission</button>
+                    </a>
+                </li>
+
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'admission:logout' %}">
+                        <button class="btn btn-danger">Logout</button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock navbar %}

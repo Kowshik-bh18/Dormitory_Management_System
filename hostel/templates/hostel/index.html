@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Rooms{% endblock title %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Room Information</h1>
+        <div class="row">
+            {% for room in rooms %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Room Number: {{ room.room_number }}</h5>
+                            <p class="card-text">Capacity: {{ room.capacity }}</p>
+                            <p class="card-text">
+                                Status: 
+                                {% if room.occupied %}
+                                    <span class="badge bg-danger">Full</span>
+                                {% else %}
+                                    <span class="badge bg-success">Vacant</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

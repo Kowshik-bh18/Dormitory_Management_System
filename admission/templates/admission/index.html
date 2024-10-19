@@ -1,0 +1,42 @@
+{%extends 'base.html'%}
+{%block title%}index{%endblock title%}
+{%block content%}
+<div class="container mt-4">
+
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <h5>Upcoming Announcements</h5>
+            <ul class="list-group">
+                {% for announcement in announcements %}
+                    <li class="list-group-item">{{ announcement.title }} - {{ announcement.date }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {%if request.user.is_superuser%}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h5>Statistics Overview</h5>
+            <p>Total Rooms:{{roomcount}}</p>
+            <p>Total Students: {{studentcount}}</p>
+            <p>Total Borrowed Books: 10</p>
+        </div>
+    </div>
+    {%else%}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            {% if request.user.is_authenticated and request.user.student.room %}
+                <p>Your room number is: {{ request.user.student.room.room_number }}</p>
+            {% else %}
+                <p>You are not assigned to a room.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    {%endif%}
+</div>
+
+<footer class="bg-light text-center py-3">
+    <p class="mb-0">&copy; Hostel Management System</p>
+</footer>
+{%endblock content%}

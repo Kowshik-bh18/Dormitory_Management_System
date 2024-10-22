@@ -1,7 +1,11 @@
+{% load static %}
 {% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'admission:index' %}">Home</a>
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'admission:index' %}">
+            <img src="{% static 'GREET.svg' %}" class="logo" alt="Logo" style="max-width: 40px; height: auto; margin-right: 10px;">
+            Home
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -11,19 +15,16 @@
                 {% if request.user.is_superuser %}
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="{%url 'admission:viewstudents'%}">View Students</a> <!-- Placeholder -->
+                    <a class="nav-link" href="{% url 'admission:viewstudents' %}">View Students</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{%url 'hostel:index'%}">Room Management</a> <!-- Placeholder -->
+                    <a class="nav-link" href="{% url 'hostel:index' %}">Room Management</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Library</a> <!-- Placeholder -->
+                    <a class="nav-link" href="#">Library</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Reports</a> <!-- Placeholder -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Timetable</a> <!-- Placeholder -->
+                    <a class="nav-link" href="{%url 'timetable:Foodtimetable'%}">Timetable</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'admission:registration' %}">

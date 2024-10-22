@@ -6,6 +6,7 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Student
 from hostel.models import Room
+from django import forms
 @login_required
 def registration(request):
     if request.method == 'POST':
@@ -35,6 +36,9 @@ def registration(request):
     return render(request, 'admission/register.html', context)
 def LoginView(request):
     page = 'login'
+    error = False
+    if(request.user.is_authenticated):
+        return redirect('admission:index')
     form = LoginForm()  # Initialize the form
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -47,8 +51,8 @@ def LoginView(request):
                 print('user logged in successfull')
                 return redirect('admission:index')  # Ensure redirect is returned
             else:
-                form.add_error(None, 'Invalid username or password')  # Add error message
-    context = {'page': page, 'form': form}  # Include the form in context
+                  error = "invalid user or password"
+    context = {'page': page, 'form': form,'error':error}  # Include the form in context
     return render(request, 'admission/login.html', context)  # Pass context
 @login_required
 def index(request):

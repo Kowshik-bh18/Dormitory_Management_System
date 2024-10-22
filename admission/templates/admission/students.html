@@ -1,6 +1,7 @@
 {%extends 'base.html'%}
 {%block title%}All students{%endblock title%}
 {%block content%}
+    {%if students%}
     {%for student in students%}
     <div class="container mt-4">
         <div class="card">
@@ -25,4 +26,8 @@
         </div>
     </div>
     {%endfor%}
+    {%else%}
+    <h1>No students admitted yet</h1>
+    <a href="{%url 'admission:registration'%}"><button class="badge bg-success">Add student</button></a>
+    {%endif%}
 {%endblock content%}

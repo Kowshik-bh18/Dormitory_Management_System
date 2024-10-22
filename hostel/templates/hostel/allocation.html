@@ -1,0 +1,36 @@
+
+
+{% extends 'base.html'%}
+{% block title %}Timetable{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Allocation</h1>
+    <div class="table-responsive">
+        <h1>{{allocationscount}}</h1>
+        <table class="table table-sm table-bordered text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Room number</th>
+                    <th scope="col">Student Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for allocation in allocations%}
+                    <tr>
+                        <td>{{allocation.room}}</td>
+                        <th scope="row">{{allocation.user}}</th>
+                        <td><a href="{%url 'hostel:delete' allocation.id%}"><button>Delete</button></a></td>
+                        <td><a href="{%url 'hostel:update' allocation.id%}"><button>Update</button></a></td>
+                    </tr>
+
+                
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No timetable available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

@@ -3,6 +3,7 @@
 {% block content %}
     <div class="container mt-5">
         <h1 class="text-center mb-4">Room Information</h1>
+        <h1>{{roomcount}}</h1>
         <div class="row">
             {% for room in rooms %}
                 <div class="col-md-4 mb-4">
@@ -10,14 +11,16 @@
                         <div class="card-body">
                             <h5 class="card-title">Room Number: {{ room.room_number }}</h5>
                             <p class="card-text">Capacity: {{ room.capacity }}</p>
+                            <a href="{%url 'hostel:allocations' room.room_number%}">
                             <p class="card-text">
                                 Status: 
-                                {% if room.occupied %}
+                                {% if room.occupied == True %}
                                     <span class="badge bg-danger">Full</span>
                                 {% else %}
                                     <span class="badge bg-success">Vacant</span>
                                 {% endif %}
                             </p>
+                        </a>
                         </div>
                     </div>
                 </div>

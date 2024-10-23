@@ -2,7 +2,12 @@ from django import forms
 from .models import Room,RoomAllocation
 from .models import RoomAllocation,Room
 
+INPUT_CLASSES = 'form-control form-control-sm'
 class Allocation(forms.ModelForm):
     class Meta:
         model = RoomAllocation
         fields = ('user',)
+class addRoomForm(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ('room_number','capacity',)

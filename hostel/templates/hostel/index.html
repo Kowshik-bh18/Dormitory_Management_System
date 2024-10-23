@@ -2,6 +2,10 @@
 {% block title %}Rooms{% endblock title %}
 {% block content %}
     <div class="container mt-5">
+        <a href="{% url 'hostel:addroom' %}" class="btn btn-success btn-sm d-inline-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="Add a new room">
+            <i class="bi bi-plus-circle me-2"></i> Add Room
+        </a>
+        
         <h1 class="text-center mb-4">Room Information</h1>
         <h1>{{roomcount}}</h1>
         <div class="row">

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .forms import RegForm,LoginForm
+from .forms import RegForm,LoginForm,updateForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Student
@@ -79,11 +79,15 @@ def deletestudent(request, pk):
 def updatedetails(request, pk):
     user = User.objects.get(pk = pk)
     student = Student.objects.get(user = user)
-    form = RegForm(instance=student)
+    form = updateForm(instance=student)
+
+    print(User.password)
     if request.method == 'POST':
-        form = RegForm(request.POST, instance=student)
+        form = updateForm(request.POST, instance=student)
+        print(user.username)
         if form.is_valid():
-            student.save()
+            commitform = form.save(commit = False)
+            commitform.save()
             return redirect('admission:viewstudents')
         else:
             print(form.errors)  # Add this line to debug

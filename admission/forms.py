@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student
+from .models import Student, Room
 
 class RegForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter the Password'}))
@@ -25,3 +25,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, label='Password')
 
 
+class updateForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        exclude = ('password1','password2','user',)

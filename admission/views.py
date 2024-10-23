@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import RegForm,LoginForm,updateForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Student
+from .models import Student, Announcements
 from hostel.models import Room
 from django import forms
 @login_required
@@ -58,8 +58,9 @@ def LoginView(request):
 def index(request):
     studentcount = Student.objects.count()
     roomcount = Room.objects.count()
-
-    context = {'studentcount':studentcount,'roomcount':roomcount}
+    announcements = Announcements.objects.all()
+    context = {'studentcount':studentcount,'roomcount':roomcount,'announcements':announcements}
+    
     return render(request,'admission/index.html',context)
 
 def LogoutView(request):
@@ -94,3 +95,19 @@ def updatedetails(request, pk):
 
     context = {'form':form}
     return render(request,'admission/updatedetails.html',context)
+
+
+
+
+def announcement_view(request):
+    announcements = Announcements.objects.all()
+    context = {"announcements":announcements}
+    return render(request,'admission/announcement.html',context)
+def deleteAnnouncements(request, pk):
+    try:
+        announcement = Announcements.objects.get(pk=pk)
+        announcement.delete()
+    except Announcements.DoesNotExist:
+        pass  # You can handle the case when the announcement doesn't exist if needed
+
+    return redirect("hostel:index")  # Redirect after deletion

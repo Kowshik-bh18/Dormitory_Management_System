@@ -20,3 +20,9 @@ def update_timetable_view(request, pk):
         form = TimeTableForm(instance=timetable)
 
     return render(request, 'timetable/update_timetable.html', {'form': form, 'timetable': timetable})
+
+
+
+
+
+    

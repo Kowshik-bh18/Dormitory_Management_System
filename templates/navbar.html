@@ -23,12 +23,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{%url 'timetable:Foodtimetable'%}">Timetable</a>
                 </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'admission:announcement' %}">
+                        Announcement
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'admission:registration' %}">
                         <button class="btn btn-outline-primary">New Admission</button>
                     </a>
                 </li>
-
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'admission:logout' %}">

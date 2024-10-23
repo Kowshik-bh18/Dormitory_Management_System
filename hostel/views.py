@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from .models import Room, RoomAllocation
-from .forms import Allocation, addRoomForm
+from .forms import Allocation
 from django.contrib.auth.models import User
 def index(request):
     rooms = Room.objects.all()
@@ -9,16 +9,13 @@ def index(request):
     return render(request, 'hostel/index.html', context)
 
 def addRoom(request):
-    form = addRoomForm()
-    if(request.method == 'POST'):
-        form = addRoomForm(request.POST)
-        if(form.is_valid()):
-            print("saving")
-            form.save()
-            print('saved')
-            return redirect("hostel:index")
-    context = {'form':form}
-    return render(request,'hostel/addroom.html',context)
+    if(request.method == "POST"):
+        room_number = request.POST.get('room_number')
+        capacity = request.POST.get('capacity')
+        room = Room(room_number = int(room_number),capacity = int(capacity))
+        room.save()
+        return redirect('hostel:index')
+    return render(request,'hostel/addroom.html')
 def allocation_view(request, pk):
     # Fetch all allocations for the room and the room object itself
     allocations = RoomAllocation.objects.filter(room=pk)
@@ -76,10 +73,15 @@ def add(request):
 
         allocation = RoomAllocation(user=user, room=room)  # Create allocation
         allocation.save()  # Save to database
-        if(allocationRoom.count()==8):
+        if(allocationRoom.count()== room.capacity):
             room.occupied = True
             room.save()
         return redirect('hostel:index')  # Redirect after successful allocation
 
     context = {'users': users, 'room': room}
     return render(request, 'hostel/add.html', context)
+
+def deleteRoom(request,pk):
+    room = Room.objects.get(pk = pk)
+    room.delete()
+    return redirect("hostel:index")

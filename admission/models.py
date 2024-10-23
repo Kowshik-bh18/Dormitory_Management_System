@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from hostel.models import Room
-# Create your models here.
+
 class Student(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null = True,blank = True)
     room = models.ForeignKey(Room,on_delete=models.CASCADE,null = True,blank = True)
@@ -19,4 +19,17 @@ class Student(models.Model):
     # course (ForeignKey to a Course model, if needed)
     def __str__(self):
         return self.first_name
+
     
+
+class Announcements(models.Model):
+    about = models.CharField(max_length=120)
+    body = models.TextField(blank=False, null=True)
+    created = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
+    updated = models.DateTimeField(auto_now=True)       # Automatically set on update
+
+    class Meta:
+        ordering = ['-updated', '-created']  # Order by updated first, then created
+
+    def __str__(self):
+        return self.about

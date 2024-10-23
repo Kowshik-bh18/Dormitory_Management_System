@@ -10,4 +10,12 @@ class Allocation(forms.ModelForm):
 class addRoomForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ('room_number','capacity',)
+        fields = '__all__'
+        widgets = {
+            'room_number': forms.Select(attrs={
+                'class': INPUT_CLASSES
+            }),
+            'capacity': forms.Select(attrs={
+                'class': INPUT_CLASSES
+            }),
+            }

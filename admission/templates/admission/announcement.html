@@ -1,0 +1,42 @@
+{%extends 'base.html'%}
+{%block title%}Announcement{%endblock title%}
+{%block content%}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Announcements</h1>
+
+    {% if announcements %}
+        {% for announcement in announcements %}
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">{{ announcement.about }}</h2>
+                    <p class="card-text">{{ announcement.body }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <time class="text-muted">{{ announcement.created | timesince }} ago</time>
+                        <a href="{% url 'admission:deleteannouncement' announcement.id %}" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Announcement">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-warning text-center" role="alert">
+            <h4 class="alert-heading">No Announcements Yet!</h4>
+            <p>Please check back later.</p>
+        </div>
+    {% endif %}
+
+    <form method='POST' class="mt-4">
+        {% csrf_token %}
+        <div class="form-group mb-4">
+            <label for="id_about" class="form-label h4">About:</label>
+            <input type="text" name="about" id="id_about" class="form-control form-control-lg" placeholder="Enter the title here" required>
+        </div>
+        
+        <div class="form-group mb-4">
+            <label for="id_body" class="form-label h4">Body:</label>
+            <textarea name="body" id="id_body" class="form-control" rows="5" placeholder="Enter the report details here" required></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Announcement</button>
+    </form>
+</div>
+{%endblock content%}

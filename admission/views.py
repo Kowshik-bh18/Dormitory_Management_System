@@ -58,7 +58,7 @@ def LoginView(request):
 def index(request):
     studentcount = Student.objects.count()
     roomcount = Room.objects.count()
-    announcements = Announcements.objects.all()
+    announcements = Announcements.objects.all()[0:3]
     context = {'studentcount':studentcount,'roomcount':roomcount,'announcements':announcements}
     
     return render(request,'admission/index.html',context)
@@ -101,6 +101,14 @@ def updatedetails(request, pk):
 
 def announcement_view(request):
     announcements = Announcements.objects.all()
+    if(request.method == 'POST'):
+        about = request.POST.get('about')
+        body = request.POST.get('body')
+        announcement = Announcements(
+            about = about,body = body
+        )
+        announcement.save()
+        return redirect("admission:announcement")
     context = {"announcements":announcements}
     return render(request,'admission/announcement.html',context)
 def deleteAnnouncements(request, pk):
@@ -110,4 +118,5 @@ def deleteAnnouncements(request, pk):
     except Announcements.DoesNotExist:
         pass  # You can handle the case when the announcement doesn't exist if needed
 
-    return redirect("hostel:index")  # Redirect after deletion
+    return redirect("admission:announcement") 
+    

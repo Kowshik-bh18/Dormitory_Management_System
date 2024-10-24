@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404,redirect
 from .models import Room, RoomAllocation
 from .forms import Allocation
 from django.contrib.auth.models import User
+from admission.models import Student
 def index(request):
     rooms = Room.objects.all()
     roomcount = rooms.count()
@@ -21,15 +22,12 @@ def allocation_view(request, pk):
     allocations = RoomAllocation.objects.filter(room=pk)
     room = get_object_or_404(Room, room_number=pk)
 
-    # Count the number of allocations
-    allocations_count = allocations.count()
-
-    # Update the 'occupied' status based on the number of allocations
-    room.occupied = allocations_count >= 8
-    room.save()
+    if(allocations.count() == room.capacity):
+        room.occupied = True
+        room.save()
     
     # Debug prints (if needed for development)
-    print(f"Allocations count: {allocations_count}")
+    print(f"Allocations count: {allocations.count}")
     print(f"Room Number: {room.room_number}")
     print(f"Room Occupied: {room.occupied}")
 
@@ -37,7 +35,7 @@ def allocation_view(request, pk):
     context = {
         'allocations': allocations,
         'room': room,
-        'allocationscount': allocations_count,
+        'allocationscount': allocations.count(),
         'room_number': pk,
     }
 
@@ -70,12 +68,12 @@ def add(request):
     if request.method == 'POST':
         username = request.POST.get('user')  # Get the username from the hidden input
         user = get_object_or_404(User, username=username)  # Ensure user exists
-
+        student = Student.objects.get(user = user)
+        student.room = room
+        student.save()
         allocation = RoomAllocation(user=user, room=room)  # Create allocation
         allocation.save()  # Save to database
-        if(allocationRoom.count()== room.capacity):
-            room.occupied = True
-            room.save()
+        allocations = RoomAllocation.objects.filter(room = room)
         return redirect('hostel:index')  # Redirect after successful allocation
 
     context = {'users': users, 'room': room}

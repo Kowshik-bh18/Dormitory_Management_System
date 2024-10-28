@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Student, Announcements
 from hostel.models import Room
 from django import forms
+from userprofile.models import Profile
 @login_required
 def registration(request):
     if request.method == 'POST':
@@ -21,7 +22,8 @@ def registration(request):
             )
             user.set_password(form.cleaned_data['password1'])  # Hash the password
             user.save()  # Save the user to the database
-            
+            profile = Profile(user = user)
+            profile.save()
             # Now save the registration info to the Student model
             student = form.save(commit=False)
             # Optionally link Student to User if there's a ForeignKey
@@ -66,17 +68,17 @@ def index(request):
 def LogoutView(request):
     logout(request)
     return redirect('admission:login')
-
+@login_required
 def veiewStudents(request):
     students = Student.objects.all()
     context = {'students':students}
     return render(request,'admission/students.html',context)
-
+@login_required
 def deletestudent(request, pk):
     student = User.objects.get(pk = pk)
     student.delete()
     return redirect('admission:viewstudents')
-
+@login_required
 def updatedetails(request, pk):
     user = User.objects.get(pk = pk)
     student = Student.objects.get(user = user)
@@ -98,7 +100,7 @@ def updatedetails(request, pk):
 
 
 
-
+@login_required
 def announcement_view(request):
     announcements = Announcements.objects.all()
     if(request.method == 'POST'):
@@ -111,6 +113,8 @@ def announcement_view(request):
         return redirect("admission:announcement")
     context = {"announcements":announcements}
     return render(request,'admission/announcement.html',context)
+
+@login_required
 def deleteAnnouncements(request, pk):
     try:
         announcement = Announcements.objects.get(pk=pk)

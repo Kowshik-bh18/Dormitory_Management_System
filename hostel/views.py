@@ -2,13 +2,16 @@ from django.shortcuts import render, get_object_or_404,redirect
 from .models import Room, RoomAllocation
 from .forms import Allocation
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from admission.models import Student
+
+@login_required
 def index(request):
     rooms = Room.objects.all()
     roomcount = rooms.count()
     context = {'rooms': rooms,'roomcount':roomcount}
     return render(request, 'hostel/index.html', context)
-
+@login_required
 def addRoom(request):
     if(request.method == "POST"):
         room_number = request.POST.get('room_number')
@@ -17,6 +20,8 @@ def addRoom(request):
         room.save()
         return redirect('hostel:index')
     return render(request,'hostel/addroom.html')
+
+@login_required
 def allocation_view(request, pk):
     # Fetch all allocations for the room and the room object itself
     allocations = RoomAllocation.objects.filter(room=pk)
@@ -42,14 +47,14 @@ def allocation_view(request, pk):
     # Render the template with the context
     return render(request, 'hostel/allocation.html', context)
 
-
+@login_required
 def delete(request, pk):
     allocated = get_object_or_404(RoomAllocation, pk=pk)
     allocated.delete()
     # Redirect to the 'index' page or wherever the allocations are listed
     return redirect('hostel:index')  # Or 'hostel:allocations' if that's correct
 
-
+@login_required
 def update(request, pk):
     slot = get_object_or_404(RoomAllocation, pk = pk)
     form = Allocation(instance=slot)
@@ -59,7 +64,7 @@ def update(request, pk):
         return redirect('hostel:index')
     return render(request,'hostel/update.html',{'form':form})
 
-
+@login_required
 def add(request):
     q = request.GET.get('q')
     room = get_object_or_404(Room, pk=q)  # Ensure room exists
@@ -78,7 +83,7 @@ def add(request):
 
     context = {'users': users, 'room': room}
     return render(request, 'hostel/add.html', context)
-
+@login_required
 def deleteRoom(request,pk):
     room = Room.objects.get(pk = pk)
     room.delete()

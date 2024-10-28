@@ -11,7 +11,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto"> <!-- Aligns nav items to the right -->
-                
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'chatroom:report' %}">Reports</a>
+                </li>
                 {% if request.user.is_superuser %}
                 
                 <li class="nav-item">
@@ -35,6 +37,16 @@
                     </a>
                 </li>
                 {% endif %}
+                {%if not request.user.is_superuser%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'chatroom:index' %}">Chat room</a>
+                </li>
+                {%endif%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'userprofile:index' %}">
+                        userprofile
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'admission:logout' %}">
                         <button class="btn btn-danger">Logout</button>

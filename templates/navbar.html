@@ -1,59 +1,83 @@
-{% load static %}
-{% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="{% url 'admission:index' %}">
-            <img src="{% static 'GREET.svg' %}" class="logo" alt="Logo" style="max-width: 40px; height: auto; margin-right: 10px;">
-            Home
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto"> <!-- Aligns nav items to the right -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'chatroom:report' %}">Reports</a>
-                </li>
-                {% if request.user.is_superuser %}
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admission:viewstudents' %}">View Students</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'hostel:index' %}">Room Management</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{%url 'timetable:Foodtimetable'%}">Timetable</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admission:announcement' %}">
-                        Announcement
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admission:registration' %}">
-                        <button class="btn btn-outline-primary">New Admission</button>
-                    </a>
-                </li>
-                {% endif %}
-                {%if not request.user.is_superuser%}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'chatroom:index' %}">Chat room</a>
-                </li>
-                {%endif%}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'userprofile:index' %}">
-                        userprofile
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'admission:logout' %}">
-                        <button class="btn btn-danger">Logout</button>
-                    </a>
-                </li>
-            </ul>
-        </div>
+{% load static %} {% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container-fluid">
+    <!-- Logo + Home -->
+    <a
+      class="navbar-brand d-flex align-items-center fw-bold text-primary"
+      href="{% url 'admission:index' %}"
+    >
+      <img
+        src="{% static 'GREET.svg' %}"
+        alt="Logo"
+        style="max-width: 40px; height: auto; margin-right: 10px"
+      />
+      BCM Hostel
+    </a>
+
+    <!-- Toggler -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        {% if request.user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'chatroom:report' %}">Reports</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'admission:viewstudents' %}"
+            >View Students</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'hostel:index' %}"
+            >Room Management</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'timetable:Foodtimetable' %}"
+            >Timetable</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'admission:announcement' %}"
+            >Announcement</a
+          >
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'admission:registration' %}">
+            <button class="btn btn-outline-primary ms-2">
+              + New Admission
+            </button>
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'chatroom:index' %}">Chat Room</a>
+        </li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'userprofile:index' %}">Profile</a>
+        </li>
+
+        <li class="nav-item ms-2">
+          <a href="{% url 'admission:logout' %}">
+            <button class="btn btn-danger">Logout</button>
+          </a>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
 {% endblock navbar %}

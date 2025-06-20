@@ -9,6 +9,7 @@ urlpatterns = [
     path('timetable',include('timetable.urls')),
     path('chatrooms/',include('chatroom.urls')),
     path('profile/',include('userprofile.urls')),
+    path("chatbot/", include("chatbot.urls")),
 ]
 
 if(settings.DEBUG):

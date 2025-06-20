@@ -196,8 +196,6 @@ Password: admin123
   <img src="https://via.placeholder.com/800x400/0d1117/58a6ff?text=Hostel+Management" alt="Hostel Management" width="48%"/>
 </div>
 
-*Replace these placeholder images with actual screenshots of your application*
-
 ---
 
 ## 🤝 Contributing
@@ -229,7 +227,7 @@ We welcome contributions! Please follow these steps:
         <br />
         <sub><b>Kowshik BH</b></sub>
         <br />
-        <a href="https://github.com/Kowshik-bh18">🚀 Lead Developer</a>
+        <a href="https://github.com/Kowshik-bh18">🚀Developer</a>
       </td>
       <td align="center">
         <img src="https://github.com/MDGanesha.png" width="100px;" alt="MDGanesha"/>
@@ -244,31 +242,9 @@ We welcome contributions! Please follow these steps:
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2024 Dormitory Management System
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
-
----
-
 ## 🌐 Live Demo
 
-🔗 **[View Live Demo](https://your-app-name.herokuapp.com)** *(Replace with your actual deployment URL)*
+🔗 **[View Live Demo](https://your-app-name.herokuapp.com)** *(Deployment in progress..)*
 
 ---
 
@@ -279,9 +255,9 @@ copies or substantial portions of the Software.
   
   **Kowshik BH**
   
-  [![Email](https://img.shields.io/badge/Email-kobh22cs@cmrit.ac.in-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kobh22cs@cmrit.ac.in)
-  [![Phone](https://img.shields.io/badge/Phone-+91_7483226281-green?style=for-the-badge&logo=whatsapp&logoColor=white)](tel:+917483226281)
-  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/your-profile)
+  [![Email](https://img.shields.io/badge/Email-kobh22cs@cmrit.ac.in-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kowshikbh18@gmail.com)
+  [![Phone](https://img.shields.io/badge/Phone-+91_7483226281-green?style=for-the-badge&logo=whatsapp&logoColor=white)](tel:+919110868186)
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kowshikbh)
   [![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Kowshik-bh18)
 </div>
 

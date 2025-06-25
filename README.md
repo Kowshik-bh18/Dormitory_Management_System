@@ -186,18 +186,6 @@ Password: admin123
 
 ---
 
-## 📸 Screenshots
-
-<div align="center">
-  <img src="https://via.placeholder.com/800x400/0d1117/58a6ff?text=Dashboard+Screenshot" alt="Dashboard" width="48%"/>
-  <img src="https://via.placeholder.com/800x400/0d1117/58a6ff?text=Chatroom+Screenshot" alt="Chatroom" width="48%"/>
-  
-  <img src="https://via.placeholder.com/800x400/0d1117/58a6ff?text=Admission+Portal" alt="Admission" width="48%"/>
-  <img src="https://via.placeholder.com/800x400/0d1117/58a6ff?text=Hostel+Management" alt="Hostel Management" width="48%"/>
-</div>
-
----
-
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these steps:
@@ -255,8 +243,8 @@ We welcome contributions! Please follow these steps:
   
   **Kowshik BH**
   
-  [![Email](https://img.shields.io/badge/Email-kobh22cs@cmrit.ac.in-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kowshikbh18@gmail.com)
-  [![Phone](https://img.shields.io/badge/Phone-+91_7483226281-green?style=for-the-badge&logo=whatsapp&logoColor=white)](tel:+919110868186)
+  [![Email](https://img.shields.io/badge/Email-kowshibh18@gmail.com-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kowshikbh18@gmail.com)
+  [![Phone](https://img.shields.io/badge/Phone-+91_9110868186-green?style=for-the-badge&logo=whatsapp&logoColor=white)](tel:+919110868186)
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kowshikbh)
   [![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Kowshik-bh18)
 </div>

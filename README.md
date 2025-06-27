@@ -231,7 +231,7 @@ We welcome contributions! Please follow these steps:
 
 ## 🌐 Live Demo
 
-🔗 **[View Live Demo](https://your-app-name.herokuapp.com)** *(Deployment in progress..)*
+🔗 **[View Live Demo](https://kowshik.pythonanywhere.com/)** *(Deployment in progress..)*
 
 ---
 

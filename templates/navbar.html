@@ -1,20 +1,252 @@
 {% load static %} {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-  <div class="container-fluid">
-    <!-- Logo + Home -->
-    <a
-      class="navbar-brand d-flex align-items-center fw-bold text-primary"
-      href="{% url 'admission:index' %}"
-    >
-      <img
-        src="{% static 'GREET.svg' %}"
-        alt="Logo"
-        style="max-width: 40px; height: auto; margin-right: 10px"
-      />
-      BCM Hostel
+<style>
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --light-bg: #ffffff;
+    --light-text: #2d3748;
+    --light-border: rgba(0, 0, 0, 0.1);
+    --light-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --light-hover: rgba(102, 126, 234, 0.1);
+
+    --dark-bg: #1a202c;
+    --dark-text: #e2e8f0;
+    --dark-border: rgba(255, 255, 255, 0.1);
+    --dark-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --dark-hover: rgba(102, 126, 234, 0.2);
+  }
+
+  .enhanced-navbar {
+    background: var(--light-bg);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--light-border);
+    box-shadow: var(--light-shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body.dark-theme .enhanced-navbar {
+    background: rgba(26, 32, 44, 0.95);
+    border-bottom: 1px solid var(--dark-border);
+    box-shadow: var(--dark-shadow);
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.4rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-icon {
+    width: 45px;
+    height: 45px;
+    background: var(--primary-gradient);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+
+  .navbar-toggler {
+    border: none;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: rgba(102, 126, 234, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  body.dark-theme .navbar-toggler {
+    background: rgba(102, 126, 234, 0.15);
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  .navbar-toggler i {
+    color: #667eea;
+    font-size: 1rem;
+  }
+
+  .navbar-nav .nav-link {
+    font-weight: 500;
+    color: var(--light-text);
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin: 0 4px;
+    transition: all 0.3s ease;
+  }
+
+  body.dark-theme .navbar-nav .nav-link {
+    color: var(--dark-text);
+  }
+
+  .navbar-nav .nav-link:hover {
+    background: var(--light-hover);
+    color: #667eea;
+    transform: translateY(-1px);
+  }
+
+  body.dark-theme .navbar-nav .nav-link:hover {
+    background: var(--dark-hover);
+    color: #667eea;
+  }
+
+  .nav-link i {
+    margin-right: 8px;
+    font-size: 0.9rem;
+  }
+
+  .btn-gradient {
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  .btn-logout {
+    background: var(--secondary-gradient);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+    color: white;
+  }
+
+  .theme-toggle {
+    background: var(--light-bg);
+    border: 2px solid var(--light-border);
+    border-radius: 50px;
+    width: 50px;
+    height: 28px;
+    position: relative;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  body.dark-theme .theme-toggle {
+    background: var(--dark-bg);
+    border-color: var(--dark-border);
+  }
+
+  .theme-toggle::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+  }
+
+  body.dark-theme .theme-toggle::before {
+    transform: translateX(22px);
+  }
+  .logo-img {
+  height: 50px;       /* matches navbar height nicely */
+  width: auto;        /* keeps aspect ratio */
+  object-fit: contain;
+  border-radius:50%;
+}
+
+  .theme-toggle i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    color: #667eea;
+  }
+
+  .theme-toggle .fa-sun {
+    left: 6px;
+  }
+
+  .theme-toggle .fa-moon {
+    right: 6px;
+  }
+
+  .profile-avatar {
+    width: 35px;
+    height: 35px;
+    background: var(--primary-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    margin-left: 10px;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 991px) {
+    .navbar-nav {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--light-border);
+    }
+
+    body.dark-theme .navbar-nav {
+      border-top-color: var(--dark-border);
+    }
+
+    .navbar-nav .nav-item {
+      margin: 4px 0;
+    }
+
+    .theme-toggle {
+      margin: 10px 0;
+    }
+  }
+</style>
+
+<!-- Font Awesome for icons -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  rel="stylesheet"
+/>
+
+<nav class="navbar navbar-expand-lg enhanced-navbar sticky-top">
+  <a class="logo-container d-flex align-items-center" href="{% url 'admission:index' %}">
+      <img src="{% static 'hostel.jpg' %}" alt="Logo" class="logo-img me-2" />
+      <span class="fw-bold">BCM Hostel</span>
     </a>
 
-    <!-- Toggler -->
+    <!-- Mobile Toggler -->
     <button
       class="navbar-toggler"
       type="button"
@@ -24,60 +256,103 @@
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+      <i class="fas fa-bars"></i>
     </button>
 
     <!-- Menu Items -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'timetable:Foodtimetable' %}">
+            <i class="fas fa-calendar-alt"></i>Timetable
+          </a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" href="{% url 'chatroom:report' %}">
+            <i class="fas fa-chart-bar"></i>Reports
+          </a>
+        </li>
         {% if request.user.is_superuser %}
+  
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'chatroom:report' %}">Reports</a>
+          <a class="nav-link" href="{% url 'admission:viewstudents' %}">
+            <i class="fas fa-users"></i>View Students
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'admission:viewstudents' %}"
-            >View Students</a
-          >
+          <a class="nav-link" href="{% url 'hostel:index' %}">
+            <i class="fas fa-bed"></i>Room Management
+          </a>
         </li>
+        
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'hostel:index' %}"
-            >Room Management</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'timetable:Foodtimetable' %}"
-            >Timetable</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'admission:announcement' %}"
-            >Announcement</a
-          >
+          <a class="nav-link" href="{% url 'admission:announcement' %}">
+            <i class="fas fa-bullhorn"></i>Announcement
+          </a>
         </li>
         <li class="nav-item">
           <a href="{% url 'admission:registration' %}">
-            <button class="btn btn-outline-primary ms-2">
-              + New Admission
+            <button class="btn btn-gradient">
+              <i class="fas fa-plus"></i> New Admission
             </button>
           </a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'chatroom:index' %}">Chat Room</a>
+          <a class="nav-link" href="{% url 'chatroom:index' %}">
+            <i class="fas fa-comments"></i>Chat Room
+          </a>
         </li>
+        
         {% endif %}
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'userprofile:index' %}">Profile</a>
+          <a class="nav-link" href="{% url 'userprofile:index' %}">
+            <i class="fas fa-user-circle"></i>Profile
+          </a>
         </li>
 
-        <li class="nav-item ms-2">
+        <!-- Theme Toggle -->
+        <li class="nav-item">
+          <div class="theme-toggle" onclick="toggleTheme()">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+          </div>
+        </li>
+
+        <li class="nav-item">
           <a href="{% url 'admission:logout' %}">
-            <button class="btn btn-danger">Logout</button>
+            <button class="btn btn-logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
           </a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<script>
+  // Theme Toggle Functionality
+  function toggleTheme() {
+    const body = document.body;
+    const isDark = body.classList.contains("dark-theme");
+
+    if (isDark) {
+      body.classList.remove("dark-theme");
+      localStorage.setItem("theme", "light");
+    } else {
+      body.classList.add("dark-theme");
+      localStorage.setItem("theme", "dark");
+    }
+  }
+
+  // Load saved theme on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-theme");
+    }
+  });
+</script>
 {% endblock navbar %}

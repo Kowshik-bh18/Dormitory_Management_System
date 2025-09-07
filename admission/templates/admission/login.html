@@ -1,7 +1,203 @@
-{% extends "base.html" %} {% block title %}Login{% endblock title %} 
-{% block content %}
+{% extends "base.html" %}{% load static %} {% block title %}Login - Hostel
+Management{% endblock title %} {% block content %}
 <style>
-  /* Smooth fade-in animation */
+  :root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --bg-light: #f8f9fa;
+    --bg-dark: #1a1a1a;
+    --text-light: #212529;
+    --text-dark: #ffffff;
+    --card-light: rgba(255, 255, 255, 0.95);
+    --card-dark: rgba(30, 30, 30, 0.95);
+  }
+
+  /* Theme Variables */
+  body.light-theme {
+    --bg-color: var(--bg-light);
+    --text-color: var(--text-light);
+    --card-color: var(--card-light);
+    --border-color: #e9ecef;
+  }
+
+  body.dark-theme {
+    --bg-color: var(--bg-dark);
+    --text-color: var(--text-dark);
+    --card-color: var(--card-dark);
+    --border-color: #404040;
+  }
+
+  body {
+    background: linear-gradient(
+      135deg,
+      var(--bg-color) 0%,
+      var(--bg-color) 100%
+    );
+    color: var(--text-color);
+    transition: all 0.3s ease;
+  }
+
+  /* Simple Navbar */
+  .navbar {
+    background: var(--card-color) !important;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .navbar-brand {
+    font-weight: 600;
+    color: var(--primary-color) !important;
+  }
+
+  .nav-link {
+    color: var(--text-color) !important;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--primary-color) !important;
+  }
+
+  /* Logo Section */
+  .logo-section {
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+  }
+
+  .logo-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    padding: 10px;
+    background: var(--card-color);
+    animation: logoFloat 3s ease-in-out infinite;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+  }
+
+  @keyframes logoFloat {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(5deg);
+    }
+  }
+
+  /* Hostel Marquee Animation */
+  .hostel-marquee {
+    background: linear-gradient(
+      90deg,
+      var(--primary-color),
+      #28a745,
+      #ffc107,
+      var(--primary-color)
+    );
+    background-size: 300% 100%;
+    animation: gradientShift 4s ease-in-out infinite;
+    padding: 8px 0;
+    margin: 15px 0;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  @keyframes gradientShift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .marquee-content {
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    animation: scroll 15s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Floating Icons Animation */
+  .floating-icons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .floating-icon {
+    position: absolute;
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+    font-size: 2rem;
+    color: var(--primary-color);
+  }
+
+  .floating-icon:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+  .floating-icon:nth-child(2) {
+    top: 60%;
+    left: 80%;
+    animation-delay: 2s;
+  }
+  .floating-icon:nth-child(3) {
+    top: 40%;
+    left: 20%;
+    animation-delay: 4s;
+  }
+  .floating-icon:nth-child(4) {
+    top: 80%;
+    left: 60%;
+    animation-delay: 1s;
+  }
+  .floating-icon:nth-child(5) {
+    top: 10%;
+    left: 70%;
+    animation-delay: 3s;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 0.1;
+    }
+    50% {
+      transform: translateY(-20px) rotate(180deg);
+      opacity: 0.3;
+    }
+  }
+
+  /* Enhanced Form Styles */
   .fade-in {
     animation: fadeInUp 0.8s ease-in-out;
   }
@@ -17,87 +213,389 @@
     }
   }
 
-  .form-control:focus {
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
-    border-color: #007bff;
+  .form-control {
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: var(--card-color);
+    color: var(--text-color);
   }
 
-  .btn-primary:hover {
-    background-color: #0056b3;
+  .form-control:focus {
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    background: var(--card-color);
   }
 
   .card {
     border: none;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    background: var(--card-color);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
   }
 
-  .form-label {
-    font-weight: 500;
+  .btn-primary {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      var(--primary-color),
+      var(--primary-hover)
+    );
+    border: none;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+  }
+
+  .welcome-text {
+    background: linear-gradient(135deg, var(--primary-color), #28a745);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes textGlow {
+    from {
+      filter: brightness(1);
+    }
+    to {
+      filter: brightness(1.2);
+    }
+  }
+
+  .form-floating > label {
+    color: var(--text-color);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .form-floating > .form-control:focus ~ label,
+  .form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--primary-color);
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+  }
+
+  /* Theme Toggle */
+  .theme-toggle {
+    background: var(--card-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+  }
+
+  .theme-toggle:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  /* Container adjustments */
+  .main-container {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  /* Loading and validation states */
+  .btn-loading {
+    position: relative;
+    color: transparent !important;
+  }
+
+  .btn-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .form-control.is-invalid {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-4px);
+    }
+    75% {
+      transform: translateX(4px);
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .logo {
+      width: 60px;
+      height: 60px;
+    }
+    .marquee-content {
+      font-size: 0.8rem;
+    }
+    .main-container {
+      padding: 10px;
+    }
   }
 </style>
 
-<div
-  class="container d-flex align-items-center justify-content-center"
-  style="min-height: 100vh"
->
+<!-- Simple Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">🏠 BCM Hostel</a>
+
+    <div class="navbar-nav ms-auto d-flex flex-row align-items-center">
+      <a
+        class="nav-link me-3"
+        href="#"
+        data-bs-toggle="modal"
+        data-bs-target="#helpModal"
+      >
+        <i class="bi bi-question-circle"></i> Help
+      </a>
+      <button
+        class="btn btn-sm theme-toggle"
+        id="themeToggle"
+        onclick="toggleTheme()"
+      >
+        <i class="bi bi-moon-fill" id="themeIcon"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+<!-- Toast container -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+  {% if messages %} {% for message in messages %}
   <div
-    class="card shadow-lg p-4 fade-in"
-    style="width: 100%; max-width: 420px; border-radius: 1rem"
+    class="toast align-items-center text-bg-{{ message.tags }} border-0 mb-2"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
   >
-    <h2 class="text-center mb-4 text-primary fw-bold">Welcome Back 👋</h2>
+    <div class="d-flex">
+      <div class="toast-body">{{ message }}</div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+  {% endfor %} {% endif %}
+</div>
 
-    <form method="POST" class="needs-validation" novalidate>
-      {% csrf_token %}
+<!-- Floating Background Icons -->
+<div class="floating-icons">
+  <div class="floating-icon">🏠</div>
+  <div class="floating-icon">🛏️</div>
+  <div class="floating-icon">🔑</div>
+  <div class="floating-icon">👥</div>
+  <div class="floating-icon">📋</div>
+</div>
 
-      <div class="form-floating mb-3">
-        <input
-          type="text"
-          id="username"
-          name="username"
-          class="form-control"
-          placeholder="Username"
-          required
-        />
-        <label for="username">Username</label>
-        <div class="invalid-feedback">Please enter your username.</div>
+<!-- Main Content -->
+<div class="main-container" style="margin-top: 80px">
+  <div class="w-100" style="max-width: 450px">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <div class="logo-container">
+        <img src="{% static 'hostel.jpg' %}" class="logo" alt="Hostel Logo" />
       </div>
+      <h3
+        class="mt-3 text-center"
+        style="color: var(--primary-color); font-weight: 600"
+      >
+        Bcm Postmetric Boys Hostel,Siddapura
+      </h3>
+    </div>
 
-      <div class="form-floating mb-3">
-        <input
-          type="password"
-          id="password"
-          name="password"
-          class="form-control"
-          placeholder="Password"
-          required
-        />
-        <label for="password">Password</label>
-        <div class="invalid-feedback">Please enter your password.</div>
+    <!-- Animated Marquee -->
+    <div class="hostel-marquee">
+      <div class="marquee-content">
+        🏠 Comfortable Living • 🛏️ Modern Rooms • 🍽️ Quality Meals • 🔒 Safe
+        Environment • 📶 Hostel Life • 🚿 Clean Facilities • ❤️ Friends
       </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="card shadow-lg p-4 fade-in">
+      <h2 class="text-center mb-4 fw-bold welcome-text">Welcome Back 👋</h2>
+
+      <form method="POST" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-control"
+            placeholder="Username"
+            required
+          />
+          <label for="username">📧 Username</label>
+          <div class="invalid-feedback">Please enter your username.</div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            placeholder="Password"
+            required
+          />
+          <label for="password">🔐 Password</label>
+          <div class="invalid-feedback">Please enter your password.</div>
+        </div>
+
+        <div class="text-center mb-3">
+          <button
+            type="submit"
+            class="btn btn-primary w-100 py-2"
+            id="loginBtn"
+          >
+            <span>🚀 Login to Dashboard</span>
+          </button>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger text-center" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}
+        </div>
+        {% endif %}
+      </form>
 
       <div class="text-center">
-        <button type="submit" class="btn btn-primary w-100 py-2">Login</button>
+        <a
+          href="{% url 'hostel:user_password_reset' %}"
+          class="text-decoration-none small text-muted"
+        >
+          🔑 Forgot Password?
+        </a>
+        <a
+          href="{% url 'hostel:admin_password_reset' %}"
+          class="text-decoration-none small text-muted"
+        >
+          🔑 Admin Forgot Password?
+        </a>
       </div>
+    </div>
+  </div>
+</div>
 
-      {% if error %}
-      <div class="alert alert-danger mt-3 text-center" role="alert">
-        {{ error }}
+<!-- Help Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div
+      class="modal-content"
+      style="
+        background: var(--card-color);
+        border: 1px solid var(--border-color);
+      "
+    >
+      <div class="modal-header">
+        <h5 class="modal-title" style="color: var(--text-color)">
+          <i class="bi bi-question-circle me-2"></i>Help & Support
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
       </div>
-      {% endif %}
-    </form>
+      <div class="modal-body" style="color: var(--text-color)">
+        <h6>🏠 Hostel Management System</h6>
+        <p>Welcome to our modern hostel management platform!</p>
 
-    <div class="text-center mt-4">
-      <a href="#" class="text-decoration-none small text-muted"
-        >Forgot Password?</a
-      >
+        <h6>📞 Support Contact:</h6>
+        <ul>
+          <li>📧 Email: support@bcmhostel.com</li>
+          <li>📱 Phone: +91-9110868186</li>
+          <li>⏰ Hours: 24/7 Support Available</li>
+        </ul>
+
+        <h6>🔐 Login Issues:</h6>
+        <ul>
+          <li>Ensure your username and password are correct</li>
+          <li>Check if Caps Lock is enabled</li>
+          <li>Contact admin if you forgot your credentials</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Bootstrap validation
+  // Theme Management
+  document.addEventListener("DOMContentLoaded", function () {
+    var toastElList = [].slice.call(document.querySelectorAll(".toast"));
+    var toastList = toastElList.map(function (toastEl) {
+      var option = { delay: 5000 }; // 5 seconds
+      var bsToast = new bootstrap.Toast(toastEl, option);
+      bsToast.show();
+      return bsToast;
+    });
+  });
+
+  let isDarkTheme = localStorage.getItem("theme") === "dark";
+
+  function toggleTheme() {
+    isDarkTheme = !isDarkTheme;
+    updateTheme();
+    localStorage.setItem("theme", isDarkTheme ? "dark" : "light");
+  }
+
+  function updateTheme() {
+    const body = document.body;
+    const themeIcon = document.getElementById("themeIcon");
+
+    if (isDarkTheme) {
+      body.className = "dark-theme";
+      themeIcon.className = "bi bi-sun-fill";
+    } else {
+      body.className = "light-theme";
+      themeIcon.className = "bi bi-moon-fill";
+    }
+  }
+
+  // Initialize theme
+  updateTheme();
+
+  // Form validation with loading state
   (() => {
     "use strict";
     const forms = document.querySelectorAll(".needs-validation");
+    const loginBtn = document.getElementById("loginBtn");
+
     Array.from(forms).forEach((form) => {
       form.addEventListener(
         "submit",
@@ -105,12 +603,31 @@
           if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
+
+            const invalidInputs = form.querySelectorAll(
+              ".form-control:invalid"
+            );
+            invalidInputs.forEach((input) => {
+              input.classList.add("is-invalid");
+            });
+          } else {
+            loginBtn.classList.add("btn-loading");
+            loginBtn.disabled = true;
           }
+
           form.classList.add("was-validated");
         },
         false
       );
     });
   })();
+
+  // Auto-focus and welcome animation
+  document.addEventListener("DOMContentLoaded", function () {
+    const firstInput = document.querySelector("#username");
+    if (firstInput) {
+      setTimeout(() => firstInput.focus(), 500);
+    }
+  });
 </script>
 {% endblock content %}

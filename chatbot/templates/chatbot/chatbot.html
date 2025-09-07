@@ -1,188 +1,302 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hostel Assistant Chatbot</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<head>
+<meta charset="UTF-8">
+<title>Hostel Assistant Chatbot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: linear-gradient(to right, #fdf6e3, #fbe8c3);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
-      body {
-        font-family: "Segoe UI", sans-serif;
-        background: linear-gradient(to right, #8e9eab, #eef2f3);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-      }
+/* Floating Bubbles Background */
+.bg-bubbles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+.bg-bubbles .bubble {
+  position: absolute;
+  border-radius: 50%;
+  animation: floatUp 12s infinite linear;
+  opacity: 0.3;
+  background: rgba(245,158,11,0.2);
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+}
 
-      .chat-container {
-        width: 100%;
-        max-width: 500px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        animation: fadeIn 1s ease-in-out;
-      }
+/* Chat Container */
+.chat-container {
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  background: rgba(255,250,240,0.95);
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 1px solid rgba(245,158,11,0.2);
+  overflow: hidden;
+}
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+/* Header */
+.chat-header {
+  background: linear-gradient(135deg,#fff8f0,#fef3e2);
+  padding: 20px;
+  border-bottom: 2px solid rgba(245,158,11,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.logo-container img {
+  width: 70px;
+  height: 70px;
+  border-radius: 15px;
+  object-fit: cover;
+  border: 2px solid #f59e0b;
+}
+.brand-text { text-align: left; }
+.brand-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg,#d97706,#f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.brand-subtitle { font-size: 1rem; color:#92400e; font-weight:500; }
+.welcome-message {
+  background: rgba(245,158,11,0.1);
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 0.95rem;
+  color: #7c4a00;
+  text-align: center;
+}
 
-      .chat-header {
-        background-color: #4b6cb7;
-        color: white;
-        padding: 15px;
-        font-size: 20px;
-        text-align: center;
-      }
+/* Chat Box */
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+.message { display: flex; flex-direction: column; max-width: 85%; flex-shrink: 0; }
+.user-msg { align-self: flex-end; }
+.bot-msg { align-self: flex-start; }
+.bubble {
+  padding: 12px 16px;
+  border-radius: 20px;
+  word-wrap: break-word;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.user-msg .bubble { background: linear-gradient(135deg,#f59e0b,#d97706); color: #fff; border-bottom-right-radius: 8px; }
+.bot-msg .bubble { background: rgba(255,229,180,0.9); color: #7c4a00; border-bottom-left-radius: 8px; border:1px solid rgba(245,158,11,0.2); }
 
-      .chat-box {
-        max-height: 400px;
-        overflow-y: auto;
-        padding: 15px;
-        background: #f9f9f9;
-      }
+/* Input Area */
+.chat-input {
+  display: flex;
+  padding: 15px;
+  gap: 10px;
+  border-top: 2px solid rgba(245,158,11,0.1);
+  flex-shrink: 0;
+}
+#user-msg {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 2px solid rgba(245,158,11,0.3);
+  border-radius: 25px;
+  outline: none;
+}
+.send-button {
+  padding: 12px 20px;
+  background: linear-gradient(135deg,#f59e0b,#d97706);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
 
-      .message {
-        margin-bottom: 12px;
-        line-height: 1.4;
-        display: flex;
-        flex-direction: column;
-      }
+/* Action Buttons */
+.button-group {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+.button-group button {
+  background: rgba(245,158,11,0.9);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.button-group button:hover { background: rgba(217,119,6,0.9); }
 
-      .user-msg {
-        align-items: flex-end;
-      }
+/* Footer */
+.footer {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #92400e;
+}
+.footer strong { color:#d97706; }
+</style>
+</head>
+<body>
 
-      .bot-msg {
-        align-items: flex-start;
-      }
+<div class="chat-container">
+  <!-- Background bubbles -->
+  <div class="bg-bubbles">
+    <div class="bubble" style="width:50px;height:50px;left:10%;"></div>
+    <div class="bubble" style="width:70px;height:70px;left:30%;"></div>
+    <div class="bubble" style="width:60px;height:60px;left:50%;"></div>
+  </div>
 
-      .bubble {
-        max-width: 80%;
-        padding: 10px 14px;
-        border-radius: 20px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        word-wrap: break-word;
-      }
+  <!-- Action Buttons -->
+  <div class="button-group">
+    <button onclick="saveChat()"><i class="fas fa-download"></i> Save</button>
+    <button onclick="clearChat()"><i class="fas fa-broom"></i> Clear</button>
+  </div>
 
-      .user-msg .bubble {
-        background: #4b6cb7;
-        color: white;
-        border-bottom-right-radius: 0;
-      }
-
-      .bot-msg .bubble {
-        background: #e2e2e2;
-        color: #333;
-        border-bottom-left-radius: 0;
-      }
-
-      .chat-input {
-        display: flex;
-        border-top: 1px solid #ccc;
-        background: #fff;
-      }
-
-      #user-msg {
-        flex: 1;
-        padding: 15px;
-        font-size: 16px;
-        border: none;
-        outline: none;
-      }
-
-      button {
-        background: #4b6cb7;
-        color: white;
-        border: none;
-        padding: 0 20px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-
-      button:hover {
-        background: #3a529b;
-      }
-
-      @media (max-width: 600px) {
-        .chat-container {
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="chat-container">
-      <div class="chat-header">🏨 Hostel Assistant</div>
-      <div id="chat-box" class="chat-box"></div>
-      <form id="chat-form" class="chat-input">
-        <input
-          type="text"
-          id="user-msg"
-          placeholder="Ask something about hostel..."
-          autocomplete="off"
-          required
-        />
-        <button type="submit">Send</button>
-      </form>
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="logo-container">
+      <img src="{% static 'hostel.jpg' %}" alt="Hostel Logo">
+      <div class="brand-text">
+        <div class="brand-title">Boys Hostel</div>
+        <div class="brand-subtitle">Siddapura, Bengaluru 560066</div>
+      </div>
     </div>
+    <div class="welcome-message">👋 Welcome! Ask me about hostel rules, services, or facilities.</div>
+  </div>
 
-    <script>
-      const form = document.getElementById("chat-form");
-      const chatBox = document.getElementById("chat-box");
+  <!-- Chat Box -->
+  <div id="chat-box" class="chat-box">
+    <div class="message bot-msg">
+      <div class="bubble">Hello! I'm your Hostel Assistant. Ask me anything about hostel services.</div>
+    </div>
+  </div>
 
-      function addMessage(text, isUser) {
-        const wrapper = document.createElement("div");
-        wrapper.className = `message ${isUser ? "user-msg" : "bot-msg"}`;
+  <!-- Input -->
+  <form id="chat-form" class="chat-input">
+    <input type="text" id="user-msg" placeholder="Ask something about hostel..." required>
+    <button type="submit" class="send-button"><i class="fas fa-paper-plane"></i> Send</button>
+  </form>
+</div>
 
-        const bubble = document.createElement("div");
-        bubble.className = "bubble";
-        bubble.textContent = text;
+<!-- Footer -->
+<div class="footer">
+  &copy; <strong>Boys Hostel Siddapura</strong> | {{ now|date:"Y-m-d" }} | Contact: info@boys.hostel.com
+</div>
 
-        wrapper.appendChild(bubble);
-        chatBox.appendChild(wrapper);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
+<script>
+const form = document.getElementById("chat-form");
+const chatBox = document.getElementById("chat-box");
 
-      form.onsubmit = async function (e) {
-        e.preventDefault();
-        const input = document.getElementById("user-msg");
-        const message = input.value.trim();
-        if (!message) return;
+function addMessage(text, isUser){
+  const wrapper = document.createElement("div");
+  wrapper.className = `message ${isUser ? 'user-msg':'bot-msg'}`;
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerHTML = text;
+  wrapper.appendChild(bubble);
+  chatBox.appendChild(wrapper);
+  chatBox.scrollTop = chatBox.scrollHeight; // auto-scroll
+}
 
-        addMessage(message, true);
-        input.value = "";
+form.onsubmit = async function(e){
+  e.preventDefault();
+  const input = document.getElementById("user-msg");
+  const message = input.value.trim();
+  if(!message) return;
 
-        try {
-          const response = await fetch("/chatbot/ask/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: message }),
-          });
-          const data = await response.json();
-          addMessage(data.reply, false);
-        } catch (err) {
-          addMessage("❌ Error contacting the bot.", false);
-        }
-      };
-    </script>
-  </body>
+  addMessage(message, true);
+  input.value = "";
+
+  try{
+    const response = await fetch("/chatbot/ask/",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ message })
+    });
+    const data = await response.json();
+    if(data.answer){
+      addMessage(`<strong>${data.section||'Info'}</strong><br>${data.answer}`, false);
+    } else {
+      addMessage(data.reply || "Sorry, I couldn't process your request.", false);
+    }
+  }catch(err){
+    addMessage("❌ Connection error. Please try again.", false);
+  }
+};
+
+// Save Chat
+function saveChat(){
+  const messages = Array.from(chatBox.querySelectorAll('.message')).map(m=>{
+    const role = m.classList.contains('user-msg')?'You':'Assistant';
+    return `${role}: ${m.innerText}`;
+  });
+  const blob = new Blob([messages.join("\n\n")],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `hostel_chat_${new Date().toISOString().split('T')[0]}.txt`;
+  a.click();
+}
+
+// Clear Chat
+function clearChat(){
+  if(confirm('Clear chat history?')){
+    chatBox.innerHTML = '';
+    addMessage("Hello! I'm your Hostel Assistant. Ask me anything about hostel services.", false);
+  }
+}
+
+// Enter key submit
+document.getElementById("user-msg").addEventListener('keydown', function(e){
+  if(e.key==='Enter' && !e.shiftKey){
+    e.preventDefault();
+    form.dispatchEvent(new Event('submit'));
+  }
+});
+
+// Focus input
+document.getElementById("user-msg").focus();
+</script>
+</body>
 </html>

@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+# settings.py
+from django.contrib.messages import constants as messages
+
 
 from pathlib import Path
 
@@ -86,7 +89,13 @@ DATABASES = {
     }
 }
 
-
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -127,6 +136,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+# ================= EMAIL CONFIG =================
+ADMIN_SECRET_ID = "bcm2004"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "bcmsiddapura@gmail.com"   # 🔑 replace with official hostel email
+EMAIL_HOST_PASSWORD = "cbxt pexo ttit bvvh"              # 🔑 use Gmail App Password
+DEFAULT_FROM_EMAIL = "BCM Hostel Siddapura <bcmsiddapura@gmail.com>"
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [

@@ -1,39 +1,541 @@
 {% extends 'base.html' %}
-{% block title %}Timetable{% endblock title %}
-{% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Food Timetable</h1>
-    <div class="table-responsive">
-        <table class="table table-sm table-bordered text-center">
-            <thead>
-                <tr>
-                    <th scope="col">Day</th>
-                    <th scope="col">Breakfast</th>
-                    <th scope="col">Lunch</th>
-                    <th scope="col">Snacks</th>
-                    <th scope="col">Dinner</th>
-                    <th scope="col">Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for day in timetable %}
-                    <tr>
-                        <th scope="row">{{ day.day }}</th>
-                        <td>{{ day.break_fast }}</td>
-                        <td>{{ day.lunch }}</td>
-                        <td>{{ day.snacks }}</td>
-                        <td>{{ day.dinner }}</td>
-                        <td><a href="{%url 'timetable:update' day.id%}" class="btn btn-warning btn-sm">update</a></td>
-                    </tr>
+{% block title %}Hostel Food Timetable{% endblock title %}
 
-                
-                {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center">No timetable available.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+{% block content %}
+<style>
+    .hostel-container {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+    
+    .hostel-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+    
+    .hostel-header {
+        background: linear-gradient(135deg, #1e40af, #3730a3);
+        padding: 30px;
+        text-align: center;
+        color: white;
+    }
+    
+    .hostel-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .hostel-subtitle {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-bottom: 25px;
+        animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    
+    .week-info {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 12px 20px;
+        display: inline-block;
+        font-weight: 600;
+        animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+    
+    .controls {
+        background: #f8fafc;
+        padding: 20px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .control-btn {
+        padding: 10px 20px;
+        background: white;
+        color: #374151;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+    
+    .control-btn:hover {
+        border-color: #1e40af;
+        color: #1e40af;
+        transform: translateY(-1px);
+    }
+    
+    .control-btn.active {
+        background: #1e40af;
+        color: white;
+        border-color: #1e40af;
+    }
+    
+    .table-container {
+        padding: 25px;
+        overflow-x: auto;
+    }
+    
+    .hostel-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        animation: slideInUp 0.6s ease-out 0.6s both;
+    }
+    
+    .hostel-table thead {
+        background: #f1f5f9;
+    }
+    
+    .hostel-table th {
+        padding: 18px 16px;
+        color: #1f2937;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+        text-align: left;
+    }
+    
+    .hostel-table th:first-child {
+        text-align: center;
+        background: #1e40af;
+        color: white;
+    }
+    
+    .hostel-table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f1f5f9;
+        animation: fadeInUp 0.4s ease-out calc(var(--row-index) * 0.1s) both;
+    }
+    
+    .hostel-table tbody tr:hover {
+        background: #f8fafc;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .hostel-table tbody tr:last-child {
+        border-bottom: none;
+    }
+    
+    .hostel-table td {
+        padding: 16px;
+        text-align: left;
+        color: #374151;
+        font-weight: 500;
+        vertical-align: top;
+    }
+    
+    .day-cell {
+        font-weight: 700;
+        color: white;
+        background: #1e40af !important;
+        text-align: center !important;
+        font-size: 1rem;
+        position: relative;
+    }
+    
+    .day-cell::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #fbbf24;
+    }
+    
+    .meal-cell {
+        position: relative;
+        min-width: 180px;
+        max-width: 250px;
+    }
+    
+    .meal-content {
+        padding: 12px 16px;
+        border-radius: 8px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        line-height: 1.5;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .meal-content:hover {
+        background: #eff6ff;
+        border-color: #3b82f6;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+    
+    .meal-icon {
+        font-size: 1.1rem;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+    
+    .meal-text {
+        flex: 1;
+        font-weight: 500;
+        color: #374151;
+        word-wrap: break-word;
+    }
+    
+    .update-btn {
+        background: #dc2626;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .update-btn:hover {
+        background: #b91c1c;
+        transform: translateY(-1px);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: #6b7280;
+        background: #f9fafb;
+        border-radius: 8px;
+        margin: 15px;
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        display: block;
+        opacity: 0.7;
+    }
+    
+    .filter-highlight {
+        background: #fef3c7 !important;
+        border-color: #f59e0b !important;
+    }
+    
+    .current-day {
+        background: #065f46 !important;
+        color: white !important;
+    }
+    
+    .current-day::after {
+        content: '● TODAY';
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.7rem;
+        background: #10b981;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hostel-title {
+            font-size: 1.8rem;
+        }
+        
+        .controls {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .control-btn {
+            width: 160px;
+        }
+        
+        .hostel-table th,
+        .hostel-table td {
+            padding: 12px 8px;
+            font-size: 0.85rem;
+        }
+        
+        .meal-content {
+            padding: 10px 12px;
+            min-height: 45px;
+        }
+        
+        .meal-icon {
+            font-size: 1rem;
+            margin-right: 8px;
+        }
+    }
+    
+    .notice-board {
+        background: #fffbeb;
+        border: 1px solid #f59e0b;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px;
+        color: #92400e;
+        font-weight: 500;
+    }
+    
+    .notice-title {
+        font-weight: 700;
+        color: #78350f;
+        margin-bottom: 8px;
+    }
+</style>
+
+<div class="hostel-container">
+    <div class="container">
+        <div class="hostel-card">
+            <div class="hostel-header">
+                <h1 class="hostel-title">Hostel Mess Timetable</h1>
+                <p class="hostel-subtitle">Weekly Meal Schedule</p>
+                <div class="week-info">
+                    📅 Current Week's Menu
+                </div>
+            </div>
+            
+            <div class="notice-board">
+                <div class="notice-title">📢 Mess Timings</div>
+                Breakfast: 7:00 AM - 9:30 AM | Lunch: 12:30 PM - 2:30 PM | Snacks: 4:30 PM - 6:00 PM | Dinner: 7:30 PM - 9:30 PM
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn active" onclick="showAll()">📋 All Meals</button>
+                <button class="control-btn" onclick="filterMeal('breakfast')">🌅 Breakfast</button>
+                <button class="control-btn" onclick="filterMeal('lunch')">🍽️ Lunch</button>
+                <button class="control-btn" onclick="filterMeal('snacks')">🍪 Snacks</button>
+                <button class="control-btn" onclick="filterMeal('dinner')">🌙 Dinner</button>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table class="hostel-table" id="timetableTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Day</th>
+                                <th scope="col" data-meal="breakfast">🌅 Breakfast (7:00-9:30 AM)</th>
+                                <th scope="col" data-meal="lunch">🍽️ Lunch (12:30-2:30 PM)</th>
+                                <th scope="col" data-meal="snacks">🍪 Snacks (4:30-6:00 PM)</th>
+                                <th scope="col" data-meal="dinner">🌙 Dinner (7:30-9:30 PM)</th>
+                                {% if user.is_superuser %}
+                                    <th scope="col">Actions</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for day in timetable %}
+                                <tr style="--row-index: {{ forloop.counter }};" {% if day.day == "Today" or day.day|lower in "monday tuesday wednesday thursday friday saturday sunday"|make_list %}class="today-row"{% endif %}>
+                                    <td class="day-cell {% if day.day == 'Today' %}current-day{% endif %}">
+                                        {{ day.day|title }}
+                                    </td>
+                                    <td class="meal-cell" data-meal="breakfast">
+                                        <div class="meal-content" onclick="showMealDetails('{{ day.day }}', 'Breakfast', '{{ day.break_fast }}')">
+                                            <span class="meal-icon">🍳</span>
+                                            <span class="meal-text">{{ day.break_fast|default:"Not Available" }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="meal-cell" data-meal="lunch">
+                                        <div class="meal-content" onclick="showMealDetails('{{ day.day }}', 'Lunch', '{{ day.lunch }}')">
+                                            <span class="meal-icon">🍚</span>
+                                            <span class="meal-text">{{ day.lunch|default:"Not Available" }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="meal-cell" data-meal="snacks">
+                                        <div class="meal-content" onclick="showMealDetails('{{ day.day }}', 'Snacks', '{{ day.snacks }}')">
+                                            <span class="meal-icon">☕</span>
+                                            <span class="meal-text">{{ day.snacks|default:"Not Available" }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="meal-cell" data-meal="dinner">
+                                        <div class="meal-content" onclick="showMealDetails('{{ day.day }}', 'Dinner', '{{ day.dinner }}')">
+                                            <span class="meal-icon">🍛</span>
+                                            <span class="meal-text">{{ day.dinner|default:"Not Available" }}</span>
+                                        </div>
+                                    </td>
+                                    {% if user.is_superuser %}
+                                        <td>
+                                            <a href="{% url 'timetable:update' day.id %}" class="update-btn">
+                                                ✏️ Edit
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="{% if user.is_superuser %}6{% else %}5{% endif %}" class="empty-state">
+                                        <span class="empty-icon">🍽️</span>
+                                        <strong>No meal schedule available</strong><br>
+                                        Please contact mess management for this week's menu.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Meal Details Modal -->
+<div id="mealModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 16px; max-width: 450px; margin: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); border: 1px solid #e2e8f0;">
+        <h3 id="modalTitle" style="margin-bottom: 20px; color: #1f2937; font-size: 1.4rem; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;"></h3>
+        <div id="modalContent" style="color: #374151; font-size: 1rem; line-height: 1.6; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;"></div>
+        <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+            <button onclick="closeMealModal()" style="padding: 10px 20px; background: #6b7280; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get current day
+    const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    
+    // Filter functionality
+    function showAll() {
+        const table = document.getElementById('timetableTable');
+        const rows = table.querySelectorAll('tbody tr');
+        const headers = table.querySelectorAll('thead th');
+        
+        headers.forEach(header => header.style.display = '');
+        rows.forEach(row => {
+            row.style.display = '';
+            const cells = row.querySelectorAll('td, th');
+            cells.forEach(cell => cell.style.display = '');
+        });
+        
+        document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        document.querySelectorAll('.filter-highlight').forEach(el => el.classList.remove('filter-highlight'));
+    }
+    
+    function filterMeal(mealType) {
+        const table = document.getElementById('timetableTable');
+        const rows = table.querySelectorAll('tbody tr');
+        const headers = table.querySelectorAll('thead th');
+        
+        headers.forEach(header => {
+            const mealData = header.getAttribute('data-meal');
+            if (mealData && mealData !== mealType) {
+                header.style.display = 'none';
+            } else {
+                header.style.display = '';
+            }
+        });
+        
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            cells.forEach(cell => {
+                const mealData = cell.getAttribute('data-meal');
+                if (mealData && mealData !== mealType) {
+                    cell.style.display = 'none';
+                } else {
+                    cell.style.display = '';
+                }
+            });
+        });
+        
+        document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        document.querySelectorAll('.filter-highlight').forEach(el => el.classList.remove('filter-highlight'));
+        document.querySelectorAll(`[data-meal="${mealType}"]`).forEach(el => {
+            if (el.style.display !== 'none') {
+                el.classList.add('filter-highlight');
+            }
+        });
+    }
+    
+    // Modal functionality
+    function showMealDetails(day, mealType, mealContent) {
+        const modal = document.getElementById('mealModal');
+        const title = document.getElementById('modalTitle');
+        const content = document.getElementById('modalContent');
+        
+        title.innerHTML = `🍽️ ${day} - ${mealType}`;
+        content.innerHTML = `<strong>Menu:</strong><br>${mealContent || 'No meal planned for this time. Please check with mess management.'}`;
+        
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMealModal() {
+        const modal = document.getElementById('mealModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Close modal on outside click
+    document.getElementById('mealModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeMealModal();
+        }
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeMealModal();
+        }
+    });
+    
+    // Highlight current day
+    document.addEventListener('DOMContentLoaded', function() {
+        const daysCells = document.querySelectorAll('.day-cell');
+        daysCells.forEach(cell => {
+            if (cell.textContent.trim().toLowerCase() === currentDay.toLowerCase()) {
+                cell.classList.add('current-day');
+            }
+        });
+    });
+</script>
 {% endblock content %}

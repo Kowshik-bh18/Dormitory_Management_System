@@ -1,51 +1,66 @@
-{% extends 'base.html' %}
-{% block title %}Timetable{% endblock title %}
-
+{% extends 'base.html' %} {% block title %}Room Allocation{% endblock title %}
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Allocation</h1>
+  <h1 class="text-center mb-4">Room {{ room.room_number }} Allocation</h1>
 
-    <div class="table-responsive">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Total Allocations: {{ allocationscount }}</h4>
-            {%if allocationscount == 8%}            
-                <button class="btn btn-danger">Room is full</button>
-            {%else%}
-            <a href="{% url 'hostel:add' %}?q={{ room_number }}">
-            <button class="btn btn-success">Add Allocation</button>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Total Allocations: {{ allocationscount }}/{{ room.capacity }}</h4>
+
+    {% if allocationscount >= room.capacity %}
+    <button class="btn btn-danger" disabled>Room is Full</button>
+    {% else %}
+    <!-- Correct Option A: Pass ?q=room.pk -->
+    <a href="{% url 'hostel:add' %}?q={{ room.pk }}">
+      <button class="btn btn-success">Add Allocation</button>
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="table-responsive">
+    <table
+      class="table table-sm table-bordered table-hover text-center align-middle"
+    >
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Room Number</th>
+          <th scope="col">Student</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for allocation in allocations %}
+        <tr>
+          <td>{{ allocation.room.room_number }}</td>
+          <td>{{ allocation.user.username }}</td>
+          <td>
+            <a
+              href="{% url 'hostel:update' allocation.id %}"
+              class="btn btn-warning btn-sm me-2"
+            >
+              Update
             </a>
-            {%endif%}
-        </div>
+            <a
+              href="{% url 'hostel:delete' allocation.id %}"
+              class="btn btn-danger btn-sm"
+              onclick="return confirm('Are you sure you want to delete this allocation?');"
+            >
+              Delete
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3" class="text-center">No allocations available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-        <table class="table table-sm table-bordered table-hover text-center align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">Room Number</th>
-                    <th scope="col">Student Name</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for allocation in allocations %}
-                    <tr>
-                        <td>{{ allocation.room }}</td>
-                        <th scope="row">{{ allocation.user }}</th>
-                        <td>
-                            <a href="{% url 'hostel:delete' allocation.id %}" class="btn btn-danger btn-sm me-2">
-                                Delete
-                            </a>
-                            <a href="{% url 'hostel:update' allocation.id %}" class="btn btn-warning btn-sm">
-                                Update
-                            </a>
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="3" class="text-center">No allocations available.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <div class="mt-3">
+    <a href="{% url 'hostel:index' %}" class="btn btn-secondary"
+      >Back to Rooms</a
+    >
+  </div>
 </div>
 {% endblock content %}

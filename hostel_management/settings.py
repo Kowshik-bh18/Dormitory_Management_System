@@ -138,14 +138,14 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 # ================= EMAIL CONFIG =================
-ADMIN_SECRET_ID = "bcm2004"
+ADMIN_SECRET_ID = ""
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "bcmsiddapura@gmail.com"   # 🔑 replace with official hostel email
-EMAIL_HOST_PASSWORD = "cbxt pexo ttit bvvh"              # 🔑 use Gmail App Password
+EMAIL_HOST_PASSWORD = ""              # 🔑 use Gmail App Password
 DEFAULT_FROM_EMAIL = "BCM Hostel Siddapura <bcmsiddapura@gmail.com>"
 
 

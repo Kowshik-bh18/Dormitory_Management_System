@@ -31,7 +31,7 @@ def ask_bot(request):
     hostel_context = json.dumps(hostel_info, indent=2)
 
     # Mistral AI request
-    mistral_api_key = "w6Hukn9XI9JXxpQ0ML66jd4Qx7fC6oe9"
+    mistral_api_key = "your_api_key"
     url = "https://api.mistral.ai/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {mistral_api_key}",

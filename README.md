@@ -1,4 +1,4 @@
-# 🏨 Dormitory Management System
+# Dormitory Management System
 
 <div align="center">
   <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django"/>
@@ -17,7 +17,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Features](#-features)
 - [Project Structure](#-project-structure)
@@ -30,21 +30,21 @@
 
 ---
 
-## ✨ Features
+## Features
 
 <div align="center">
   <table>
     <tr>
       <td align="center">
-        <img src="https://img.shields.io/badge/🧾-Student_Admission-blue?style=for-the-badge" alt="Admission"/>
+        <img src="https://img.shields.io/badge/-Student_Admission-blue?style=for-the-badge" alt="Admission"/>
         <br><strong>Student Admission Module</strong>
       </td>
       <td align="center">
-        <img src="https://img.shields.io/badge/🏢-Hostel_Management-green?style=for-the-badge" alt="Hostel"/>
+        <img src="https://img.shields.io/badge/-Hostel_Management-green?style=for-the-badge" alt="Hostel"/>
         <br><strong>Hostel & Room Management</strong>
       </td>
       <td align="center">
-        <img src="https://img.shields.io/badge/👤-User_Profiles-orange?style=for-the-badge" alt="Profile"/>
+        <img src="https://img.shields.io/badge/-User_Profiles-orange?style=for-the-badge" alt="Profile"/>
         <br><strong>User Profile Handling</strong>
       </td>
     </tr>
@@ -54,11 +54,11 @@
         <br><strong>Real-Time Chatrooms</strong>
       </td>
       <td align="center">
-        <img src="https://img.shields.io/badge/🤖-Chatbot_Support-red?style=for-the-badge" alt="Chatbot"/>
+        <img src="https://img.shields.io/badge/-Chatbot_Support-red?style=for-the-badge" alt="Chatbot"/>
         <br><strong>Integrated Chatbot Support</strong>
       </td>
       <td align="center">
-        <img src="https://img.shields.io/badge/📅-Timetable_View-yellow?style=for-the-badge" alt="Timetable"/>
+        <img src="https://img.shields.io/badge/-Timetable_View-yellow?style=for-the-badge" alt="Timetable"/>
         <br><strong>Timetable Management</strong>
       </td>
     </tr>
@@ -66,14 +66,14 @@
 </div>
 
 ### Additional Features:
-- 🗂️ **Media Handling** - Secure file uploads and management
-- 🛡️ **Authentication & Authorization** - Secure user access control
-- 📱 **Responsive Design** - Mobile-friendly interface
-- ⚡ **Real-time Updates** - Live notifications and updates
+- **Media Handling** - Secure file uploads and management
+- **Authentication & Authorization** - Secure user access control
+- **Responsive Design** - Mobile-friendly interface
+- **Real-time Updates** - Live notifications and updates
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Dormitory_Management_System/
@@ -97,7 +97,7 @@ Dormitory_Management_System/
 
 ---
 
-## ⚙️ Technologies Used
+## Technologies Used
 
 <div align="center">
   <h3>Backend</h3>
@@ -114,7 +114,7 @@ Dormitory_Management_System/
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -168,7 +168,7 @@ http://127.0.0.1:8000
 
 ---
 
-## 🎯 Usage
+## Usage
 
 ### Sample Credentials (for testing)
 ```
@@ -185,7 +185,7 @@ Password: admin123
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please follow these steps:
 
@@ -214,14 +214,14 @@ We welcome contributions! Please follow these steps:
         <br />
         <sub><b>Kowshik BH</b></sub>
         <br />
-        <a href="https://github.com/Kowshik-bh18">🚀Developer</a>
+        <a href="https://github.com/Kowshik-bh18">Developer</a>
       </td>
       <td align="center">
         <img src="https://github.com/MDGanesha.png" width="100px;" alt="MDGanesha"/>
         <br />
         <sub><b>MDGanesha</b></sub>
         <br />
-        <a href="https://github.com/MDGanesha">💻 Developer</a>
+        <a href="https://github.com/MDGanesha">Developer</a>
       </td>
     </tr>
   </table>
@@ -229,13 +229,13 @@ We welcome contributions! Please follow these steps:
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 
 🔗 **[View Live Demo](https://kowshik.pythonanywhere.com/)
 
 ---
 
-## 📞 Contact
+## Contact
 
 <div align="center">
   <h3>Get in Touch</h3>
@@ -258,3 +258,4 @@ We welcome contributions! Please follow these steps:
   <img src="https://img.shields.io/github/forks/Kowshik-bh18/Dormitory_Management_System?style=social" alt="GitHub forks"/>
   <img src="https://img.shields.io/github/watchers/Kowshik-bh18/Dormitory_Management_System?style=social" alt="GitHub watchers"/>
 </div>
+
